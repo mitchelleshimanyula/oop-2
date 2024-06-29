@@ -1,0 +1,83 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Main extends JFrame {
+
+    private JLabel picture;
+
+    public Main() {
+        if (GraphicsEnvironment.isHeadless()) {
+            System.out.println("Running in headless mode. GUI is not supported.");
+            return;
+        }
+        
+        setTitle("Pet Selector");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        JRadioButton birdButton = new JRadioButton("Bird");
+        JRadioButton catButton = new JRadioButton("Cat");
+        JRadioButton dogButton = new JRadioButton("Dog");
+        JRadioButton rabbitButton = new JRadioButton("Rabbit");
+        JRadioButton pigButton = new JRadioButton("Pig");
+
+        ButtonGroup group = new ButtonGroup();
+        group.add(birdButton);
+        group.add(catButton);
+        group.add(dogButton);
+        group.add(rabbitButton);
+        group.add(pigButton);
+
+        JPanel radioPanel = new JPanel();
+        radioPanel.setLayout(new GridLayout(0, 1));
+        radioPanel.add(birdButton);
+        radioPanel.add(catButton);
+        radioPanel.add(dogButton);
+        radioPanel.add(rabbitButton);
+        radioPanel.add(pigButton);
+
+        add(radioPanel, BorderLayout.WEST);
+
+        picture = new JLabel();
+        picture.setHorizontalAlignment(JLabel.CENTER);
+        add(picture, BorderLayout.CENTER);
+
+        ActionListener listener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JRadioButton button = (JRadioButton) e.getSource();
+                showPicture(button.getText());
+            }
+        };
+
+        birdButton.addActionListener(listener);
+        catButton.addActionListener(listener);
+        dogButton.addActionListener(listener);
+        rabbitButton.addActionListener(listener);
+        pigButton.addActionListener(listener);
+    }
+
+    private void showPicture(String pet) {
+        if (GraphicsEnvironment.isHeadless()) {
+            System.out.println("You selected: " + pet);
+        } else {
+            picture.setText("You selected: " + pet);
+            JOptionPane.showMessageDialog(this, "You selected: " + pet);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (!GraphicsEnvironment.isHeadless()) {
+                    Main main = new Main();
+                    main.setVisible(true);
+                } else {
+                    System.out.println("Running in headless mode. GUI is not supported.");
+                }
+            }
+        });
+    }
+}
